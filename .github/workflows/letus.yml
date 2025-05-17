@@ -24,12 +24,10 @@ jobs:
       # ❹ 依存パッケージと Playwright ブラウザをインストール
       - name: Install deps
         run: |
-          pip install playwright python-dotenv requests
+          pip install -r requirements.txt
           playwright install --with-deps chromium   # OS 依存ライブラリ込みで落とす
-          pip install keyring keyrings.alt \
-                      playwright python-dotenv requests
-          playwright install --with-deps chromium
-
+        
+      - uses: actions/checkout@v4
 
       # ❺ スクリプトを実行（静かなモード）
       - name: Run LETUS watcher
