@@ -26,6 +26,10 @@ jobs:
         run: |
           pip install playwright python-dotenv requests
           playwright install --with-deps chromium   # OS 依存ライブラリ込みで落とす
+          pip install keyring keyrings.alt \
+                      playwright python-dotenv requests
+          playwright install --with-deps chromium
+
 
       # ❺ スクリプトを実行（静かなモード）
       - name: Run LETUS watcher
