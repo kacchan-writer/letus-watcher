@@ -26,8 +26,6 @@ jobs:
         run: |
           pip install -r requirements.txt
           playwright install --with-deps chromium   # OS 依存ライブラリ込みで落とす
-        
-      - uses: actions/checkout@v4
 
       # ❺ スクリプトを実行（静かなモード）
       - name: Run LETUS watcher
