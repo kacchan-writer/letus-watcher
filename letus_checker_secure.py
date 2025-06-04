@@ -105,6 +105,7 @@ class LetusChecker:
     async def login(self):
         page = await self.ctx.new_page()
         await page.goto(DASHBOARD_URL)
+        await page.wait_for_load_state("domcontentloaded")
         if await page.locator('[data-region="timeline"]').count():
             return page  # cached session
 

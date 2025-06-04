@@ -33,3 +33,9 @@ Use `--watch` to continuously poll LETUS every _n_ minutes:
 ```bash
 python letus_checker_secure.py --watch 30 --due-within 6
 ```
+
+## Notes
+
+The login step now waits for the dashboard page's DOM to be loaded
+before attempting to locate elements. This improves reliability on slow
+connections.
