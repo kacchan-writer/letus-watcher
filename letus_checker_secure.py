@@ -64,6 +64,13 @@ def get_secret(key: str) -> Optional[str]:
     return keyring.get_password(SERVICE, key)
 
 
+def clear_secret(key: str):
+    try:
+        keyring.delete_password(SERVICE, key)
+    except Exception:
+        pass
+
+
 def parse_due_date(text: str) -> Optional[dt.datetime]:
     jp = re.search(r"(\d{4})年(\d{1,2})月(\d{1,2})日\s*(\d{1,2}):(\d{2})", text)
     if jp:
@@ -167,6 +174,13 @@ def configure():
         save_secret("LINE_TOKEN", token)
     console.print("[green]保存しました。[/green]")
 
+
+def clear_credentials():
+    """Remove stored credentials from the keyring."""
+    for key in ("USERNAME", "PASSWORD", "LINE_TOKEN"):
+        clear_secret(key)
+    console.print("[yellow]Credentials cleared.[/yellow]")
+
 async def main_async(args):
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
@@ -192,6 +206,7 @@ async def main_async(args):
 def build_parser():
     ap = argparse.ArgumentParser(description="Secure LETUS assignment watcher")
     ap.add_argument("--configure", action="store_true", help="Store credentials in keyring and exit")
+    ap.add_argument("--clear", action="store_true", help="Remove stored credentials and exit")
     ap.add_argument("--due-within", type=int, default=48, help="Deadline window in hours")
     ap.add_argument("--watch", type=int, metavar="MIN", help="Continuous mode: check every MIN minutes")
     ap.add_argument("--quiet", action="store_true", help="Suppress output when no alerts")
@@ -202,5 +217,8 @@ if __name__ == "__main__":
     args = build_parser().parse_args()
     if args.configure:
         configure()
+        raise SystemExit(0)
+    if args.clear:
+        clear_credentials()
         raise SystemExit(0)
     asyncio.run(main_async(args))
