@@ -23,7 +23,9 @@ jobs:
 
       # ❹ 依存パッケージと Playwright ブラウザをインストール
       - name: Install deps
-        run: playwright install --with-deps chromium   # OS 依存ライブラリ込みで落とす
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium   # OS 依存ライブラリ込みで落とす
 
       # ❺ スクリプトを実行（静かなモード）
       - name: Run LETUS watcher
