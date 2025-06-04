@@ -22,6 +22,12 @@ keyring:
 python letus_checker_secure.py --configure --due-within 24
 ```
 
+Stored credentials can be removed later with `--clear`:
+
+```bash
+python letus_checker_secure.py --clear
+```
+
 After configuration you can simply run the checker:
 
 ```bash
