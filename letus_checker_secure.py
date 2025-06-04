@@ -150,6 +150,7 @@ class LetusChecker:
                     alerts.append(task)
         if alerts:
             notify(alerts)
+        await page.close()
         return len(alerts)
 
 # --------------------------- CLI ---------------------------------------------------------------
