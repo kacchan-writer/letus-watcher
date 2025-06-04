@@ -14,9 +14,10 @@ LETUS Assignment Checker — Secure Edition
 Dependencies
 ------------
 ```bash
-pip install playwright asyncio‑run‑in‑process keyring python‑dotenv rich requests
+pip install playwright keyring python‑dotenv rich requests
 playwright install chromium
 ```
+Compatible with Python 3.11+ without the legacy `asyncio-run-in-process` helper.
 
 Quick start
 -----------
