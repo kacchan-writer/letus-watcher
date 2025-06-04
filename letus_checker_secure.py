@@ -105,8 +105,15 @@ class LetusChecker:
     async def login(self):
         page = await self.ctx.new_page()
         await page.goto(DASHBOARD_URL)
-        if await page.locator('[data-region="timeline"]').count():
-            return page  # cached session
+        # ensure any redirects finish before checking login state
+        await page.wait_for_load_state("networkidle")
+        if page.url.startswith(DASHBOARD_URL):
+            try:
+                if await page.locator('[data-region="timeline"]').count():
+                    return page  # cached session
+            except Exception:
+                # page navigated while checking; fall through to login
+                await page.wait_for_load_state("networkidle")
 
         await page.locator("text=Log in").first.click()
         await page.wait_for_load_state("networkidle")
@@ -120,6 +127,8 @@ class LetusChecker:
         await page.wait_for_load_state("networkidle")
         if "ログインエラー" in await page.content():
             raise RuntimeError("Login failed – check credentials/MFA.")
+        await page.goto(DASHBOARD_URL)
+        await page.wait_for_load_state("networkidle")
         return page
 
     async def fetch_upcoming(self, page) -> List[dict]:
