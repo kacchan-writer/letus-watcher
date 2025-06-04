@@ -1,1 +1,6 @@
 pytest
+keyring
+requests
+python-dotenv
+rich
+playwright
